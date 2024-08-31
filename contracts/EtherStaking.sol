@@ -13,15 +13,7 @@ contract StakingContract {
     event Staked(address indexed user, uint256 amount);
     event Withdrawn(address indexed user, uint256 amount, uint256 reward);
 
-    // Prevents reentrancy attacks
-    bool private locked;
 
-    modifier noReentrant() {
-        require(!locked, "Reentrant call.");
-        locked = true;
-        _;
-        locked = false;
-    }
 
     // Stake Ether in the contract
     function stake() external payable {
@@ -50,7 +42,7 @@ contract StakingContract {
     }
 
     // Withdraw staked Ether and earned rewards
-    function withdraw() external noReentrant {
+    function withdraw() external  {
         require(stakedAmounts[msg.sender] > 0, "No staked amount.");
 
         uint256 stakedAmount = stakedAmounts[msg.sender];
